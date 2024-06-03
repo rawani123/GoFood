@@ -1,12 +1,14 @@
 import React from 'react'
 
-const Cards = () => {
+const Cards = ({foodName, options, imgSrc}) => {
+
+  const priceOptions=Object.keys(options)
   return (
     <div>
       <div className="card mt-3" style={{ width: "18rem","maxHeight":"360px" }}>
-          <img src="https://source.unsplash.com/random/900x700/?burger" className="card-img-top" alt="..." />
+          <img src={imgSrc} className="card-img-top" height={200} alt="..." />
           <div className="card-body">
-            <h5 className="card-title">Card title</h5>
+            <h5 className="card-title">{foodName}</h5>
             <p className="card-text">
                 This is imp
             </p>
@@ -17,8 +19,9 @@ const Cards = () => {
                     })}
                 </select>
                 <select className="m-2 h-100 bg-success rounded" id="">
-                    <option value="half">Half</option>
-                    <option value="full">Full</option>
+                    {priceOptions.map((option)=>{
+                      return <option key={option} value={option}>{option}</option>
+                    })}
                 </select>
 
                 <div className="d-inline h-100 fs-5">

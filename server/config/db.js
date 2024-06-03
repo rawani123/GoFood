@@ -7,7 +7,9 @@ const connectDB = async () => {
         
         const db = connection.connection.db;
         const fetchData = await db.collection("food").find({}).toArray();
-        console.log(fetchData);
+        const catData = await db.collection("FoodCategory").find({}).toArray();
+        global.foodData = fetchData;
+        global.catData = catData;
     } catch (err) {
         console.log("Error in connecting database or fetching data");
         console.log(`Error: ${err.message}`);

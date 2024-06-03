@@ -1,6 +1,7 @@
 import User from "../models/user.model.js";
 import bcrypt from "bcryptjs";
 import { validationResult } from "express-validator";
+import jwt from "jsonwebtoken";
 
 const createUser = async (req, res) => {
     try {
@@ -21,6 +22,7 @@ const createUser = async (req, res) => {
         }
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
+        
 
         const user = new User({ name, email, password: hashedPassword,location });
         await user.save();
@@ -43,9 +45,11 @@ const loginUser = async (req, res) => {
         }
         const isMatch = await bcrypt.compare(password, user.password);
         if(!isMatch){
-            return res.status(400).json({message: "Invalid credentials",success : false});
+            return res.status(200).json({message: "Invalid credentials",success : false});  
         }
-        return res.status(200).json({data: user ,success : true});
+
+        const token = jwt.sign({id: user._id}, process.env.JWT_SECRET,{expiresIn: "1d"});
+        return res.status(200).json({success : true,token});
     } catch (error) {
         console.log("Error in login user: ", error.message);
         return res.status(500).json({ error: error.message,success : false});
