@@ -8,6 +8,7 @@ import axios from "axios";
 const Home = () => {
   const [foodItems, setFoodItems] = useState([]);
   const [catFood, setCatFood] = useState([]);
+  const [search, setSearch] = useState("");
 
   const foodData = async () => {
     try {
@@ -37,20 +38,16 @@ const Home = () => {
         >
           <div className="carousel-inner" style={{ maxHeight: "500px" }}>
             <div className="carousel-caption " style={{ zIndex: "10" }}>
-              <form className="d-flex ">
+              <div className="d-flex ">
                 <input
                   className="form-control me-2"
                   type="search"
                   placeholder="Search"
                   aria-label="Search"
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
                 />
-                <button
-                  className="btn btn-outline-success text-white bg-success"
-                  type="submit"
-                >
-                  Search
-                </button>
-              </form>
+              </div>
             </div>
             <div className="carousel-item active">
               <img
@@ -109,7 +106,7 @@ const Home = () => {
               <div className="row">
                 {foodItems.length > 0 ? (
                   foodItems
-                    .filter((item) => item.CategoryName === cat.CategoryName)
+                    .filter((item) => (item.CategoryName === cat.CategoryName) && (item.name.toLowerCase().includes(search.toLocaleLowerCase())))
                     .map((filterItem) => (
                       <div
                         key={filterItem._id}
