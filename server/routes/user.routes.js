@@ -1,5 +1,5 @@
 import express from "express";
-import { createUser } from "../controller/user.controller.js";
+import { createUser, loginUser } from "../controller/user.controller.js";
 import { body } from "express-validator";
 
 const router = express.Router();
@@ -12,6 +12,14 @@ router.post(
     body("name").isLength({ min: 3 }),
   ],
   createUser
+);
+
+router.post(
+  "/login",
+  [
+    body("email").isEmail(),
+  ],
+  loginUser
 );
 
 export default router;
