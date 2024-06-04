@@ -113,9 +113,9 @@ const Home = () => {
                         className="col-12 col-md-6 col-lg-3 mb-4"
                       >
                         <Cards
-                          foodName={filterItem.name}
+                          foodItems={filterItem}
                           options={filterItem.options[0]}
-                          imgSrc={filterItem.img}
+                          
                         />
                       </div>
                     ))

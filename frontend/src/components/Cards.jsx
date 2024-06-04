@@ -1,37 +1,91 @@
-import React from 'react'
+import React, { useState, useRef, useEffect } from "react";
+import { useCartDispatch, useCart } from "./contextReducer";
 
-const Cards = ({foodName, options, imgSrc}) => {
+const Cards = (props) => {
+  const priceOptions = Object.keys(props.options);
 
-  const priceOptions=Object.keys(options)
+  let dispatch = useCartDispatch();
+
+  let cart = useCart();
+
+  const [qnty, setQnty] = useState(1);
+  const [size, setSize] = useState("");
+
+  let priceRef = useRef();
+
+  const finalPrice = parseInt(props.options[size]) * qnty;
+
+  const handleClick = async () => {
+    await dispatch({
+      type: "ADD",
+      id: props.foodItems._id,
+      name: props.foodItems.name,
+      price: finalPrice,
+      qnty: qnty,
+      size: size,
+      img: props.foodItems.img,
+    });
+    console.log(cart);
+  };
+
+  useEffect(() => {
+    setSize(priceRef.current.value);
+  }, []);
+
   return (
     <div>
-      <div className="card mt-3" style={{ width: "18rem","maxHeight":"360px" }}>
-          <img src={imgSrc} className="card-img-top" height={200} alt="..." />
-          <div className="card-body">
-            <h5 className="card-title">{foodName}</h5>
-            <p className="card-text">
-                This is imp
-            </p>
-            <div className="container w-100">
-                <select className="m-2 h-100 bg-success rounded">
-                    {Array.from(Array(6),(e,i)=>{
-                        return(<option value={i+1} key={i+1}>{i+1}</option>)
-                    })}
-                </select>
-                <select className="m-2 h-100 bg-success rounded" id="">
-                    {priceOptions.map((option)=>{
-                      return <option key={option} value={option}>{option}</option>
-                    })}
-                </select>
+      <div className="card mt-3" style={{ width: "18rem", maxHeight: "360px" }}>
+        <img
+          src={props.foodItems.img}
+          className="card-img-top"
+          height={150}
+          alt="..."
+        />
+        <div className="card-body">
+          <h5 className="card-title">{props.foodItems.name}</h5>
+          <div className="container w-100">
+            <select
+              className="m-2 h-100 bg-success rounded "
+            
+              onChange={(e) => setQnty(e.target.value)}
+            >
+              {Array.from(Array(6), (e, i) => {
+                return (
+                  <option value={i + 1} key={i + 1}>
+                    {i + 1}
+                  </option>
+                );
+              })}
+            </select>
+            <select
+              className="m-2 h-100 bg-success rounded"
+              id=""
+              
+              ref={priceRef}
+              onChange={(e) => setSize(e.target.value)}
+            >
+              {priceOptions.map((option) => {
+                return (
+                  <option key={option} value={option}>
+                    {option}
+                  </option>
+                );
+              })}
+            </select>
 
-                <div className="d-inline h-100 fs-5">
-                    Total Prize
-                </div>
-            </div>
+            <div className="d-inline h-100 fs-5">Rs {finalPrice}/-</div>
           </div>
+          <hr />
+          <button
+            className="btn btn-success justify-center ms-2"
+            onClick={handleClick}
+          >
+            Add to Cart
+          </button>
         </div>
       </div>
-  )
-}
+    </div>
+  );
+};
 
-export default Cards
+export default Cards;
