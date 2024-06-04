@@ -16,6 +16,36 @@ const Cards = (props) => {
   const finalPrice = parseInt(props.options[size]) * qnty;
 
   const handleClick = async () => {
+    let food = [];
+    for (const item of cart) {
+      if (item.id === props.foodItems._id) {
+        food = item;
+        break;
+      }
+      if (food.length !== 0) {
+        if (food.size === size) {
+          await dispatch({
+            type: "UPDATE",
+            id: props.foodItems._id,
+            qnty: qnty,
+            price: finalPrice,
+          });
+          return;
+        }else if(food.size !== size){
+          await dispatch({
+            type: "ADD",
+            id: props.foodItems._id,
+            name: props.foodItems.name,
+            price: finalPrice,
+            qnty: qnty,
+            size: size,
+            img: props.foodItems.img,
+          });
+          return;
+        }
+        return;
+      }
+    }
     await dispatch({
       type: "ADD",
       id: props.foodItems._id,
@@ -46,7 +76,6 @@ const Cards = (props) => {
           <div className="container w-100">
             <select
               className="m-2 h-100 bg-success rounded "
-            
               onChange={(e) => setQnty(e.target.value)}
             >
               {Array.from(Array(6), (e, i) => {
@@ -60,7 +89,6 @@ const Cards = (props) => {
             <select
               className="m-2 h-100 bg-success rounded"
               id=""
-              
               ref={priceRef}
               onChange={(e) => setSize(e.target.value)}
             >

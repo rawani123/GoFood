@@ -1,8 +1,15 @@
-import React from "react";
+import React,{useState} from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import Badge from "react-bootstrap/Badge";
+import Modal from "../Modal";
+import Cart from "../screens/Cart";
+import { useCart } from "./contextReducer";
 
 const Navbar = () => {
+
+  const [cartView, setCartView] = useState(false);
+  let cart = useCart();
 
   const navigate = useNavigate();
   return (
@@ -43,6 +50,7 @@ const Navbar = () => {
                   to="/"
                 >
                   My Orders
+                  
                 </Link>
               ) : (
                 ""
@@ -52,10 +60,12 @@ const Navbar = () => {
               {localStorage.getItem("token") ? (<>
                 <Link
                     className="btn bg-white text-success mx-1 px-3"
-                    to="/login"
+                    onClick={() => setCartView(true)}
                   >
-                    My Cart 
+                    My Cart {'   '}
+                    <Badge pill bg="danger">{cart.length}</Badge>
                   </Link>
+                  {cartView?<Modal onClose={()=>setCartView(false)}><Cart/></Modal>:null}
                 <div onClick={() => {localStorage.clear()
                   navigate('/')
                   window.location.reload()

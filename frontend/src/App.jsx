@@ -7,6 +7,7 @@ import "../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js";
 import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import Signup from "./screens/Signup.jsx";
 import CardProvider from "./components/contextReducer.jsx";
+import Cart from "./screens/Cart.jsx";
 
 function App() {
   return (
