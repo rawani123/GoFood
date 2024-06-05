@@ -1,6 +1,7 @@
 import React from "react";
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useCart, useCartDispatch } from "../components/contextReducer";
+import axios from "axios";
 export default function Cart() {
     let data = useCart();
     let dispatch = useCartDispatch();
@@ -17,25 +18,18 @@ export default function Cart() {
   // }
 
     const handleCheckOut = async () => {
-    //   let userEmail = localStorage.getItem("userEmail");
-    //   // console.log(data,localStorage.getItem("userEmail"),new Date())
-    //   let response = await fetch("http://localhost:5000/api/auth/orderData", {
-    //     // credentials: 'include',
-    //     // Origin:"http://localhost:3000/login",
-    //     method: 'POST',
-    //     headers: {
-    //       'Content-Type': 'application/json'
-    //     },
-    //     body: JSON.stringify({
-    //       order_data: data,
-    //       email: userEmail,
-    //       order_date: new Date().toDateString()
-    //     })
-    //   });
-    //   console.log("JSON RESPONSE:::::", response.status)
-    //   if (response.status === 200) {
-    //     dispatch({ type: "DROP" })
-    //   }
+      let userEmail = localStorage.getItem("userEmail");
+      // console.log(data,localStorage.getItem("userEmail"),new Date())
+      let response = await axios.post("http://localhost:5000/orders/order-data", {
+        email: userEmail,
+        order_data: data,
+        order_date: new Date()
+      })
+     
+      console.log("JSON RESPONSE:::::", response.status)
+      if (response.status === 200) {
+        dispatch({ type: "DROP" })
+      }
     }
 
   let totalPrice = data.reduce((total, food) => total + food.price, 0);
@@ -59,7 +53,7 @@ export default function Cart() {
               <tr>
                 <th scope='row' >{index + 1}</th>
                 <td >{food.name}</td>
-                <td>{food.qty}</td>
+                <td>{food.qnty}</td>
                 <td>{food.size}</td>
                 <td>{food.price}</td>
                 <td ><button type="button" className="btn p-0"><DeleteIcon onClick={() => { dispatch({ type: "REMOVE", index: index }) }} /></button> </td></tr>

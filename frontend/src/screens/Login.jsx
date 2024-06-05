@@ -26,6 +26,7 @@ const Login = () => {
         password: "",
       });
       localStorage.setItem("token", res.data.token);
+      localStorage.setItem("userEmail", formData.email);
       navigate("/");
     }
   };

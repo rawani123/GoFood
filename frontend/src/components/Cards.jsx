@@ -22,7 +22,8 @@ const Cards = (props) => {
         food = item;
         break;
       }
-      if (food.length !== 0) {
+    
+      if (food.length > 0) {
         if (food.size === size) {
           await dispatch({
             type: "UPDATE",
@@ -46,6 +47,7 @@ const Cards = (props) => {
         return;
       }
     }
+    
     await dispatch({
       type: "ADD",
       id: props.foodItems._id,

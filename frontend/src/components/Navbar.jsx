@@ -1,4 +1,4 @@
-import React,{useState} from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import Badge from "react-bootstrap/Badge";
@@ -7,9 +7,8 @@ import Cart from "../screens/Cart";
 import { useCart } from "./contextReducer";
 
 const Navbar = () => {
-
   const [cartView, setCartView] = useState(false);
-  let cart = useCart();
+  let cart = useCart() || [];  // Provide a default empty array if useCart returns undefined
 
   const navigate = useNavigate();
   return (
@@ -47,34 +46,36 @@ const Navbar = () => {
                 <Link
                   className="nav-link active fs-4 active mx-4"
                   aria-current="page"
-                  to="/"
+                  to="/myorder"
                 >
                   My Orders
-                  
                 </Link>
               ) : (
                 ""
               )}
             </div>
             <div className="d-flex gap-2">
-              {localStorage.getItem("token") ? (<>
-                <Link
+              {localStorage.getItem("token") ? (
+                <>
+                  <Link
                     className="btn bg-white text-success mx-1 px-3"
                     onClick={() => setCartView(true)}
                   >
                     My Cart {'   '}
                     <Badge pill bg="danger">{cart.length}</Badge>
                   </Link>
-                  {cartView?<Modal onClose={()=>setCartView(false)}><Cart/></Modal>:null}
-                <div onClick={() => {localStorage.clear()
-                  navigate('/')
-                  window.location.reload()
-                }}
-                className="btn bg-danger text-white mx-1 px-3"
-              >
-                logout
-              </div>  
-              </>
+                  {cartView ? <Modal onClose={() => setCartView(false)}><Cart /></Modal> : null}
+                  <div
+                    onClick={() => {
+                      localStorage.clear();
+                      navigate('/');
+                      window.location.reload();
+                    }}
+                    className="btn bg-danger text-white mx-1 px-3"
+                  >
+                    Logout
+                  </div>
+                </>
               ) : (
                 <>
                   <Link

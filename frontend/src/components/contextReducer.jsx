@@ -16,9 +16,11 @@ const cartReducer = (state, action) => {
               if(food.id===action.id){
                 updateArr[index]={...food,qnty:parseInt(action.qnty)+food.qnty,price : action.price+food.price}
               }
-            
             return updateArr;
             });
+        case "DROP":
+          let dropArr = [];
+          return dropArr;
         default:
            console.log("Invalid Action");
     }
